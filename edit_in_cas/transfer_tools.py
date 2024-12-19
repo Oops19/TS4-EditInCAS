@@ -29,12 +29,27 @@ log.enable()
 
 class TransferTools:
     def clone_sim(self, src_sim_info: SimInfo, dst_sim_info: SimInfo, flags: int = Transfer.ALL.value):
-        resend_physical_attributes = False
         resend_age = False
         resend_extended_species = False
+        resend_physical_attributes = False
+        resend_facial_attributes = False
+        resend_physique = False
+        resend_voice_actor = False
+        resend_voice_effect = False
+        resend_voice_pitch = False
+        resend_skin_tone = False
+        resend_skin_tone_val_shift = False
+        resend_pelt_layers = False
+        resend_trait_ids = False
+        resend_genetic_data = False
+
+        resend_custom_texture = False
         resend_preload_outfit_list = False
         resend_current_outfit = False
-        resend_physique = False
+        resend_primary_aspiration = False
+        resend_death_type = False  # not implemented
+        resend_tan_level = False
+        resend_current_whims = False
         resend_none = False  # for attributes which don't support resent
 
         if Transfer.BODY_PARTS.value == Transfer.BODY_PARTS.value & flags:
@@ -51,11 +66,31 @@ class TransferTools:
 
         if Transfer.CUSTOM_TEXTURE.value == Transfer.CUSTOM_TEXTURE.value & flags:
             self._transfer_attributes(src_sim_info, dst_sim_info, {"custom_texture", })
-            resend_none = True
+            resend_custom_texture = True
 
         if Transfer.SPECIES.value == Transfer.SPECIES.value & flags:
             self._transfer_attributes(src_sim_info, dst_sim_info, {"species", })
             resend_extended_species = True
+
+        if Transfer.ASPIRATION.value == Transfer.ASPIRATION.value & flags:
+            self._transfer_attributes(src_sim_info, dst_sim_info, {"_primary_aspiration", })
+            resend_primary_aspiration = True
+
+        if Transfer.PRELOAD_OUTFIT_LIST.value == Transfer.PRELOAD_OUTFIT_LIST.value & flags:
+            self._transfer_attributes(src_sim_info, dst_sim_info, {"_preload_outfit_list", })
+            resend_preload_outfit_list = True
+
+        if Transfer.TAN_LEVEL.value == Transfer.TAN_LEVEL.value & flags:
+            self._transfer_attributes(src_sim_info, dst_sim_info, {"_tan_level", })
+            resend_tan_level = True
+
+        if Transfer.DEATH_CAUSE.value == Transfer.DEATH_CAUSE.value & flags:
+            self._transfer_attributes(src_sim_info, dst_sim_info, {"_death_tracker", })
+            resend_death_type = True
+
+        if Transfer.WHIMS.value == Transfer.WHIMS.value & flags:
+            self._transfer_attributes(src_sim_info, dst_sim_info, {"_current_whims", })
+            resend_current_whims = True
 
         if Transfer.WALK_STYLES.value == Transfer.WALK_STYLES.value & flags:
             self._transfer_walk_style(src_sim_info, dst_sim_info)
@@ -73,8 +108,8 @@ class TransferTools:
             self._transfer_gender_sexual_orientation(src_sim_info, dst_sim_info)
             resend_none = True
 
-        if Transfer.GENDER_ROMANCE_SETTINGS.value == Transfer.GENDER_ROMANCE_SETTINGS.value & flags:
-            self._transfer_gender_romance_settings(src_sim_info, dst_sim_info)
+        if Transfer.GENDER_ROMANTIC_BOUNDARIES.value == Transfer.GENDER_ROMANTIC_BOUNDARIES.value & flags:
+            self._transfer_gender_romantic_boundaries(src_sim_info, dst_sim_info)
             resend_none = True
 
         if ((Transfer.ALL_BASE_ATTRIBUTES.value + Transfer.ALL_PHYSICAL_ATTRIBUTES.value) | flags) > 0:
@@ -104,7 +139,7 @@ class TransferTools:
                 if Transfer.ALL_FACIAL_ATTRIBUTES.value == Transfer.ALL_FACIAL_ATTRIBUTES.value & flags:
                     self._transfer_attributes(src_sim_info, dst_sim_info, {"facial_attributes", })
                     resend_facial_attributes = True
-                elif Transfer.ALL_FACIAL_ATTRIBUTES.value | flags > 0:
+                elif Transfer.ALL_FACIAL_ATTRIBUTES.value & flags > 0:
                     # TODO: REMOVE_ME - Temporarily transfer all attributes even if only 1-2 flags has been specified
                     self._transfer_attributes(src_sim_info, dst_sim_info, {"facial_attributes", })
                     resend_facial_attributes = True
@@ -124,59 +159,83 @@ class TransferTools:
                     resend_physique = True
                 if Transfer.VOICE_ACTOR.value == Transfer.VOICE_ACTOR.value & flags:
                     self._transfer_attributes(src_sim_info, dst_sim_info, {"voice_actor", })
-                    resend_physical_attributes = True
+                    resend_voice_actor = True
                 if Transfer.VOICE_EFFECT.value == Transfer.VOICE_EFFECT.value & flags:
                     self._transfer_attributes(src_sim_info, dst_sim_info, {"voice_effect", })
-                    resend_physical_attributes = True
+                    resend_voice_effect = True
                 if Transfer.VOICE_PITCH.value == Transfer.VOICE_PITCH.value & flags:
                     self._transfer_attributes(src_sim_info, dst_sim_info, {"voice_pitch", })
-                    resend_physical_attributes = True
+                    resend_voice_pitch = True
                 if Transfer.SKIN_TONE.value == Transfer.SKIN_TONE.value & flags:
                     self._transfer_attributes(src_sim_info, dst_sim_info, {"skin_tone", })
-                    resend_physical_attributes = True
+                    resend_skin_tone = True
                 if Transfer.SKIN_TONE_VAL_SHIFT.value == Transfer.SKIN_TONE_VAL_SHIFT.value & flags:
                     self._transfer_attributes(src_sim_info, dst_sim_info, {"skin_tone_val_shift", })
-                    resend_physical_attributes = True
+                    resend_skin_tone_val_shift = True
                 if Transfer.FLAGS.value == Transfer.FLAGS.value & flags:
-                    self._transfer_attributes(src_sim_info, dst_sim_info, {"flages", })
+                    self._transfer_attributes(src_sim_info, dst_sim_info, {"flags", })
                     resend_physical_attributes = True
                 if Transfer.PELT_LAYERS.value == Transfer.PELT_LAYERS.value & flags:
                     self._transfer_attributes(src_sim_info, dst_sim_info, {"pelt_layers", })
-                    resend_physical_attributes = True
+                    resend_pelt_layers = True
                 if Transfer.EXTENDED_SPECIES.value == Transfer.EXTENDED_SPECIES.value & flags:
                     self._transfer_attributes(src_sim_info, dst_sim_info, {"extended_species", })
-                    resend_physical_attributes = True
+                    resend_extended_species = True
                 if Transfer.BASE_TRAIT_IDS.value == Transfer.BASE_TRAIT_IDS.value & flags:
                     self._transfer_attributes(src_sim_info, dst_sim_info, {"base_trait_ids", })
-                    resend_physical_attributes = True
+                    resend_trait_ids = True
                 if Transfer.GENETIC_DATA.value == Transfer.GENETIC_DATA.value & flags:
                     self._transfer_attributes(src_sim_info, dst_sim_info, {"genetic_data", })
-                    resend_physical_attributes = True
+                    resend_genetic_data = True
 
         # Send updates one time
-        if resend_physical_attributes:
-            SimInfoBaseWrapper.resend_physical_attributes(dst_sim_info)
         if resend_age:
             dst_sim_info.resend_age()
         if resend_extended_species:
             dst_sim_info.resend_extended_species()
-        if resend_physique:
-            dst_sim_info.resend_physique()
-        if resend_physique or resend_physical_attributes:
-            dst_sim_info.update_fitness_state()
+
+        if resend_physical_attributes:
+            SimInfoBaseWrapper.resend_physical_attributes(dst_sim_info)
+            dst_sim_info._set_fit_fat()
+        else:
+            if resend_facial_attributes:
+                dst_sim_info.resend_facial_attributes()
+            if resend_physique:
+                dst_sim_info.resend_physique()
+                dst_sim_info._set_fit_fat()
+            if resend_voice_actor:
+                dst_sim_info.resend_voice_actor()
+            if resend_voice_effect:
+                dst_sim_info.resend_voice_effect()
+            if resend_voice_pitch:
+                dst_sim_info.resend_voice_pitch()
+            if resend_skin_tone:
+                dst_sim_info.resend_skin_tone()
+            if resend_skin_tone_val_shift:
+                dst_sim_info.resend_skin_tone_val_shift()
+            if resend_pelt_layers:
+                dst_sim_info.resend_pelt_layers()
+            if resend_trait_ids:
+                dst_sim_info.resend_trait_ids()
+            if resend_genetic_data:
+                dst_sim_info.resend_genetic_data()
+
+        if resend_custom_texture:
+            dst_sim_info.resend_custom_texture()
         if resend_preload_outfit_list:
             dst_sim_info.resend_preload_outfit_list()
-        if resend_current_outfit or resend_preload_outfit_list:
+        if resend_current_outfit:
             dst_sim_info.resend_current_outfit()
+        if resend_primary_aspiration:
+            dst_sim_info.resend_primary_aspiration()
+        if resend_death_type:
+            dst_sim_info.resend_death_type()
+        if resend_tan_level:
+            dst_sim_info.resend_suntan_data()
+        if resend_current_whims:
+            dst_sim_info.resend_current_whims()
 
     def _transfer_attributes(self, src_sim_info: SimInfo, dst_sim_info: SimInfo, attributes: Set[str]) -> bool:
-        """ Supported attributes:
-        "first_name", "first_name_key", "last_name", "last_name_key", "full_name_key", "breed_name", "breed_name_key",
-        "gender", "age", "species", "extended_species",
-        "skin_tone", "skin_tone_val_shift", "pelt_layers", "custom_texture",
-         "voice_pitch", "voice_actor", "voice_effect", "physique", "facial_attributes", "genetic_data", "flags", "packed_pronouns",
-         "base_trait_ids"
-          """
         log.debug(f"Transfer '{attributes}'")
         rv = True
         for attribute in attributes:
@@ -247,7 +306,7 @@ class TransferTools:
         # log.warn(f"Could not transfer gender sexual orientation from '{src_sim_info}' to '{dst_sim_info}' ({e}).")
         return False
 
-    def _transfer_gender_romance_settings(self, src_sim_info: SimInfo, dst_sim_info: SimInfo) -> bool:
+    def _transfer_gender_romantic_boundaries(self, src_sim_info: SimInfo, dst_sim_info: SimInfo) -> bool:
         log.debug(f"Not implemented: Transfer gender romance settings")
         # log.warn(f"Could not transfer gender romance settings from '{src_sim_info}' to '{dst_sim_info}' ({e}).")
         return False
@@ -282,7 +341,7 @@ class TransferTools:
         return rv
 
     def _transfer_walk_style(self, src_sim_info: SimInfo, dst_sim_info: SimInfo) -> bool:
-        log.debug(f"Transfer all walk styles")
+        log.debug(f"Transfer walk styles")
         rv = True
         try:
             src_sim: Sim = CommonSimUtils.get_sim_instance(src_sim_info)
@@ -295,7 +354,7 @@ class TransferTools:
                     log.warn(f"\t\tCould not transfer walk style '{walkstyle_request}' from '{src_sim_info}' to '{dst_sim_info}' ({e})")
                     rv = False
         except Exception as e:
-            log.warn(f"\tCould not transfer walk styles from '{src_sim_info}' to '{dst_sim_info}' ({e})")
+            log.warn(f"\tCould not transfer all walk styles from '{src_sim_info}' to '{dst_sim_info}' ({e})")
             rv = False
         return rv
 

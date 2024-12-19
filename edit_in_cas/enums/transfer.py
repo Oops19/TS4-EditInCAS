@@ -23,7 +23,6 @@ class Transfer(CustomEnum):
     ALL_BASE_ATTRIBUTES = AGE + GENDER + EXTENDED_SPECIES
 
     # ALL_PHYSICAL_ATTRIBUTES contains:
-    # ALL_FACIAL_ATTRIBUTES contains:
     FACIAL_ATTRIBUTE_SCULPTS = 2 ** 4
     FACIAL_FACE_MODIFIERS = 2 ** 5
     FACIAL_BODY_MODIFIERS = 2 ** 6
@@ -40,32 +39,36 @@ class Transfer(CustomEnum):
     PELT_LAYERS = 2 ** 14
     BASE_TRAIT_IDS = 2 ** 15
     GENETIC_DATA = 2 ** 16
-    # GENETIC_DATA_B = GENETIC_DATA
     ALL_PHYSICAL_ATTRIBUTES = ALL_FACIAL_ATTRIBUTES + ALL_VOICE + ALL_SKIN_TONE + FLAGS + PELT_LAYERS + EXTENDED_SPECIES + BASE_TRAIT_IDS + GENETIC_DATA
 
     # other data
     WALK_STYLES = 2 ** 17
-    TRAITS = 2 ** 18  # includes GENDER_PREGNANCY traits
+    TRAITS = 2 ** 18  # includes GENDER_* traits
     CUSTOM_TEXTURE = 22 ** 19
     NAME = 2 ** 20
     PRONOUNS = 2 ** 21
-    GENDER_DETAILS = 2 ** 22  # contains a few traits
-    GENDER_SEXUAL_ORIENTATION = 2 ** 23
-    GENDER_ROMANCE_SETTINGS = 2 ** 24
+    GENDER_DETAILS = 2 ** 22  # based on traits
+    GENDER_SEXUAL_ORIENTATION = 2 ** 23  # based on traits?
+    GENDER_ROMANTIC_BOUNDARIES = 2 ** 24  # based on traits?
     SPECIES = 2 ** 25
+    ASPIRATION = 2 ** 26
+    LIKES_DISLIKES = 2 ** 27
+    DEATH_CAUSE = 2 ** 28
+    WHIMS = 2 ** 29
+    TAN_LEVEL = 2 ** 30
+    PRELOAD_OUTFIT_LIST = 2 ** 31
+    HOUSEHOLD_RELATIONSHIPS = 2 ** 32
+    ALL = 2 ** 33 - 1
 
-    ALL = 2 ** 32 - 1
 
 r"""
 KEY							| COPY: SimInfoBaseWrapper / self								    	| RESEND: SimInfoBaseWrapper 
 BODY_PARTS					| - / _transfer_body_parts										        | resend_physical_attributes resend_outfits resend_current_outfit
-							|																    	| resend_preload_outfit_list
 
 AGE							| copy_base_attributes / _ta.age						            	| resend_age
 GENDER						| copy_base_attributes / _ta.gender  						        	| -
 EXTENDED_SPECIES			| copy_base_attributes / _ta.extended_species			        		| resend_extended_species
 ∑ ALL_BASE_ATTRIBUTES
-
 FACIAL_ATTRIBUTE_SCULPTS	| copy_physical_attributes / -							        		| resend_physical_attributes resend_facial_attributes
 FACIAL_FACE_MODIFIERS		| copy_physical_attributes / -							        		| resend_physical_attributes resend_facial_attributes
 FACIAL_BODY_MODIFIERS		| copy_physical_attributes / -								           	| resend_physical_attributes resend_facial_attributes
@@ -91,7 +94,15 @@ CUSTOM_TEXTURE				| - / _ta.custom_texture		    						        	| resend_physical
 NAME						| - / _ta.first_name,...,breed_name_key		    			   			| -
 PRONOUNS					| - / _ta.packed_pronouns		            					    	| -
 GENDER_DETAILS				| - / _transfer_gender_details							        		| -
-GENDER_SEXUAL_ORIENTATION	| - / -													        		| -
-GENDER_ROMANCE_SETTINGS		| - / -													        		| -
-SPECIES                     | - / _ta.species                                                       | -
+GENDER_SEXUAL_ORIENTATION	| - / TODO												        		| -
+GENDER_ROMANTIC_BOUNDARIES  | - / TODO												        		| -
+SPECIES                     | - / _ta.species                                                       | resend_extended_species (like school_data in EXTENDED_SPECIES)
+ASPIRATION	               	| - / _ta._primary_aspiration							        		| si.resend_primary_aspiration
+LIKES_DISLIKES	        	| - / TODO												        		| -
+DEATH_CAUSE	            	| - / _ta._death_tracker											    | si.resend_death_type _death_tracker
+WHIMS                       | - / _ta._current_whims                                                | si.resend_current_whims  
+TAN_LEVEL                   | - / _ta._tan_level                                                    | si.resend_suntan_data
+PRELOAD_OUTFIT_LIST         | - / _ta._preload_outfit_list							        		| resend_preload_outfit_list
+HOUSEHOLD_RELATIONSHIPS     | - / -												        		    | -
+
 """

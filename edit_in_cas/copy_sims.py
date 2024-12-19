@@ -190,8 +190,8 @@ class CopySims:
                 self._make_sim_instance(sim_info)
                 # TODO - All data which can be copied successfully to CAS and modified there should be applied to the sim
                 # Right now limited to the body parts / outfits.
-                flags = Transfer.BODY_PARTS.value
-                log.debug(f"Transfer data {flags:028_b} from {tmp_sim_info} to {sim_info} ...")
+                flags = ps.get_filter()
+                log.debug(f"Transfer data {flags:032_b} from {tmp_sim_info} to {sim_info} ...")
                 TransferTools().clone_sim(tmp_sim_info, sim_info, flags)
 
             except Exception as e:

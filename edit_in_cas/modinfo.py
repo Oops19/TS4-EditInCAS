@@ -33,9 +33,11 @@ class ModInfo(CommonModInfo):
 
 r'''
 v0.0.8
+    Added cheat command to filter (include) attributes / parts
     Fix Transfer enum
     Code cleanup
     Fix transfer of genetic_data which will no longer be merged
+    Added code for whims, suntan, death type
 v0.0.7
     Tested with a new 'The Sims 4' folder as the old save was broken.
     Only Outfits will be copied back from CAS to avoid replacing attributes with random values.
