@@ -28,10 +28,36 @@ class ModInfo(CommonModInfo):
 
     @property
     def _version(self) -> str:
-        return '0.0.1'
+        return '0.0.8'
 
 
-r'''   
+r'''
+v0.0.8
+    Fix Transfer enum
+    Code cleanup
+    Fix transfer of genetic_data which will no longer be merged
+v0.0.7
+    Tested with a new 'The Sims 4' folder as the old save was broken.
+    Only Outfits will be copied back from CAS to avoid replacing attributes with random values.
+    Names are now properly displayed in CAS.
+v0.0.6
+    Rework of the clone process, split in two steps.
+    Add an 8th sim to improve the synchronization to CAS.
+    Names (top) may still not be synchronized properly for all sims (left bottom names are usually fine) 
+    Physique (fat-fit) sliders may show wrong values when switching sims.
+v0.0.5
+    Replace S4CL.clone_sim() with other S4CL calls.
+    This needs some more tweaking, currently the last cloned sim is incomplete.
+    Transfer also names and pronouns
+    Don't modify the 'current outfit' (-1) type.
+v0.0.4
+    Do no longer clone walk styles, as long as the initial copy fails.
+    Log the outfit category and index then cloning body parts
+v0.0.3
+    Clone sims manually after s4cl.clone_sim()
+    Sometimes S4CL fails to clone sims properly
+v0.0.2
+    Add cheat menu
 v0.0.1
     Initial version
 '''

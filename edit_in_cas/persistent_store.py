@@ -5,6 +5,7 @@
 
 
 from edit_in_cas.enums.stage import Stage
+from sims.sim import Sim
 from ts4lib.utils.singleton import Singleton
 from typing import Tuple, Dict, Union
 
@@ -25,6 +26,7 @@ class PersistentStore(metaclass=Singleton):
         self._storage: Union[Tuple[int, int, int, Dict[int, Tuple[int, int, bool]]], None] = None  # (active_hh_id, active_si_id, tmp_hh_id, {tmp_si_id: (hh_id, si_id, de-spawn_sim)}, ... })
         self._restore: Union[Tuple[int, int, int, str], None] = None  # (sim_id, zone_id, household_id, household_name)
         self._stage = Stage.IDLE  # 0=no data, 1=data, return from CAS, 2=data, switching HH
+        self._edit_sim: Union[Tuple[Sim, int], None] = None
 
     def save_data(self, active_household_id: int, active_sim_info_id: int, tmp_household_id: int, sim_data: Dict[int, Tuple[int, int, bool]], stage: Stage = Stage.HOUSEHOLD_DATA):
         self._storage = (active_household_id, active_sim_info_id, tmp_household_id, sim_data)
@@ -50,5 +52,11 @@ class PersistentStore(metaclass=Singleton):
         self._restore = None
         self._stage = Stage.IDLE
 
+    # Currently not used, to be used to enter CAS with some delay
+    def save_edit_sim(self, sim: Sim, client_id: int):
+        self._edit_sim = sim, client_id
+
+    def get_edit_sim(self) -> Tuple[Sim, int]:
+        return self._edit_sim
 
 PersistentStore()

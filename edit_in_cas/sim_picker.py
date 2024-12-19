@@ -23,7 +23,7 @@ log: CommonLog = CommonLogRegistry.get().register_log(ModInfo.get_identity(), 'M
 log.enable()
 
 
-class Utils:
+class SimPicker:
     def show_sim_picker_dialog(self, title: str, description: str):
         def _on_submit(sim_info_list: Tuple[SimInfo]):
             CopySims().copy_sims(sim_info_list)
@@ -56,6 +56,6 @@ class Utils:
         option_dialog.show(
             sim_info=CommonSimUtils.get_active_sim_info(),
             column_count=8,
-            max_selectable=8,
+            max_selectable=7,
             on_submit=_on_submit
         )

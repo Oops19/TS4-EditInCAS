@@ -4,51 +4,73 @@ This funky mod allows to pick 1-8 sims and to edit their standard outfits in CAS
 It is not meant to edit Bathing, Situation, Career, Special, Towel, Fashion and/or Batuu outfits.
 I suggest to create these outfits as Everyday 3-5, Swimming 3-5, etc. and to use [Copy Outfits](https://github.com/Oops19/TS4-CopyOutfits) to transfer them.
 
+It ignores occults, at least nothing has been added to support them.
+
 ## Usage
-Use the cheat command `o19.eicas` or `o19.edit_in_cas` to open the sim picker and to enter CAS.
+Enable cheat menus (unless already enabled). Shift-Click on a sim and select 'Modify Sims in CAS.
+Or open the cheat console with Shift+Ctrl+C and enter the cheat command `o19.eicas` or `o19.edit_in_cas` to open the sim picker and to enter CAS.
 
 In CAS the outfits can be modified and new outfits can be added.
 Also makeup, hats, etc. can be modified
 
+## Issues
+When cloning sims to a new household this works properly within the game.
+Anyhow the UI (CAS) is not always updated properly.  
+
 ### Things to avoid in CAS:
 * Add, import and/or delete sims (new, replaced and/or removed sims are ignored)
 * Remove outfits (they will not be removed from the original sim)
-* Modify age (except in the range Teen - Elder) 
-* Modify name and/or pronouns
+* Modify age (except in the range Teen - Elder)
+* Add, remove or modify occults.
 
 ### Transferred attributes
 The code used is from Copy Outfits, so it should work fine and support also filtering in the future.
-* Outfits (all)
-* Base Attributes
-  * Age
-  * Gender
-  * Extended Species
-* Physical Attributes
-  * Facial Attributes
-    * Sculpts
-    * Face Modifiers
-    * Body Modifiers
-  * Voice Pitch
-  * Voice Actor
-  * Skin Tone
-  * Skin Tone Value Shift
-  * Flags
-  * Pelt Layers
-  * Extended Species
-  * Base Trait IDs
-  * Genetic Data
-* Walk Styles
-* Traits
-* Gender & Pregnancy settings
+While the copy process itself works fine, displaying the copied data in CAS may fail.
+
+Currently only 'Outfits' are copied back from CAS to the sim.
+There is no way to detect which values have been replaced by TS4 with random values.
+* All Outfits (+)
+* Base Attributes (?)
+  * Age (+)
+  * Gender (+)
+  * Extended Species (?)
+* Physical Attributes (?)
+  * Facial Attributes (+)
+    * Sculpts (+)
+    * Face Modifiers (+)
+    * Body Modifiers (+)
+  * Physique (-)
+  * Voice Pitch (+)
+  * Voice Actor (+)
+  * Voice Effect (+)
+  * Skin Tone (+)
+  * Skin Tone Value Shift (+)
+  * Flags (?)
+  * Pelt Layers (?)
+  * Extended Species (?)
+  * Base Trait IDs (?)
+  * Genetic Data (?)
+    * Genetic Data (?)
+    * Genetic Data B (?)
+* Walk Styles (+)
+* Traits (?)
+* Gender & Pregnancy settings (?)
+* Name (+)
+* Pronouns (?)
+* Household Relationship (-)
+
+* `-` replaced by random values in CAS
+* `+` seem to work fine every time
+* `?` to be tested
 
 ### Important
 After exiting CAS answer the 'Save Game?' question with 'Just Switch to Household'.
 In case you click 'Cancel' manually change to the previously played household to finish the outfit edit.
 
-If you don't do this TS4 will have a new household with the sims selected and edited before.
+If you don't switch to the previously played household TS4 will have a new household with the sims selected and edited before.
 'Cancel' is a valid choice to add a new household and to keep the new household.
-To keep the household save and exit the game.
-Without saving the game it may still be deleted when switching back to the previously played household.  
+To keep the household change it to played households in CAS and then save and exit the game.
+Without exiting the game it may still be deleted when switching back to the previously played household.  
 
 
 # Addendum

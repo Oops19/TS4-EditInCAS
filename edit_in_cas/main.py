@@ -5,10 +5,12 @@
 
 
 from edit_in_cas.modinfo import ModInfo
-from edit_in_cas.utils import Utils
+from edit_in_cas.sim_picker import SimPicker
 from sims4communitylib.services.commands.common_console_command import CommonConsoleCommand
 from sims4communitylib.services.commands.common_console_command_output import CommonConsoleCommandOutput
 from sims4communitylib.utils.common_log_registry import CommonLog, CommonLogRegistry
+from sims4communitylib.utils.sims.common_household_utils import CommonHouseholdUtils
+from sims4communitylib.utils.sims.common_sim_utils import CommonSimUtils
 
 log: CommonLog = CommonLogRegistry.get().register_log(ModInfo.get_identity(), 'Main')
 log.enable()
@@ -24,7 +26,7 @@ class Main:
         Main.initialized = True
 
     def do_it(self):
-        Utils().show_sim_picker_dialog('Edit Sims in CAS', 'Select 1-8 sims. 1 TYAE sim is required to exit CAS.')
+        SimPicker().show_sim_picker_dialog('Edit Sims in CAS', 'Select 1-8 sims. 1 TYAE sim is required to exit CAS.')
 
     @staticmethod
     @CommonConsoleCommand(ModInfo.get_identity(), 'o19.edit_in_cas', "Description ...", ('o19.e_i_cas', 'o19.eicas', ))
