@@ -11,7 +11,16 @@ Enable cheat menus (unless already enabled). Shift-Click on a sim and select 'Mo
 Or open the cheat console with Shift+Ctrl+C and enter the cheat command `o19.eicas` or `o19.edit_in_cas` to open the sim picker and to enter CAS.
 
 In CAS the outfits can be modified and new outfits can be added.
-Also makeup, hats, etc. can be modified
+All CAS parts including makeup, hats, etc. can be modified
+
+### Important
+After exiting CAS answer the 'Save Game?' question with 'Just Switch to Household'.
+In case you click 'Cancel' manually change to the previously played household to finish the outfit edit.
+
+If you don't switch to the previously played household TS4 will have a new household with the sims selected and edited before.
+'Cancel' is a valid choice to add a new household and to keep the new household.
+To keep the household change it to played households in CAS and then save and exit the game.
+Without exiting the game it may still be deleted when switching back to the previously played household. 
 
 ## Issues
 When cloning sims to a new household this works properly within the game.
@@ -19,32 +28,35 @@ Anyhow the UI (CAS) is not always updated properly.
 
 ### Things to avoid in CAS:
 * Add, import and/or delete sims (new, replaced and/or removed sims are ignored)
-* Remove outfits (they will not be removed from the original sim)
+* Remove outfits (they will not be removed from the original sim, new outfits will be added)
 * Modify age (except in the range Teen - Elder)
-* Add, remove or modify occults.
+* Add, remove or modify occults. This seems to work only for some occults.
 
 ### Transferred attributes
-The code used is from Copy Outfits, so it should work fine and support also filtering in the future.
-While the copy process itself works fine, displaying the copied data in CAS may fail.
+The code used is from Copy Outfits, so it works fine and supports filtering.
+The copy process of attributes itself works fine, displaying the copied data in CAS may fail.
 
 Currently only 'Outfits' are copied back from CAS to the sim.
-There is no way to detect which values have been replaced by TS4 with random values.
-* All Outfits (++)
-* Base Attributes (?)
+There is no way to detect which values have been replaced by TS4 with random values and which have been modified.
+
+* Body Parts / All Outfits (++)
+* Base Attributes
   * Age (+)
   * Gender (+)
   * Extended Species (?)
-* Physical Attributes (?)
+* Physical Attributes
   * Facial Attributes (+)
-    * Sculpts (+)
-    * Face Modifiers (+)
-    * Body Modifiers (+)
+    * Sculpts (individual transfer not possible)
+    * Face Modifiers (individual transfer not possible)
+    * Body Modifiers (individual transfer not possible)
   * Physique (-)
-  * Voice Pitch (+)
-  * Voice Actor (+)
-  * Voice Effect (+)
-  * Skin Tone (+)
-  * Skin Tone Value Shift (+)
+  * Voice
+    * Voice Actor (+)
+    * Voice Pitch (+)
+    * Voice Effect (+)
+  * Skin
+    * Skin Tone (+)
+    * Skin Tone Value Shift (+)
   * Flags (?)
   * Pelt Layers (?)
   * Extended Species (?)
@@ -66,46 +78,47 @@ There is no way to detect which values have been replaced by TS4 with random val
 * Preload Outfit List (?%)
 * Tan Level (?%)
 * Whims (?%)
+* Buffs (?%)
 
 
 * `?` To be tested
 * `-`or `not implemented` Replaced by random values in CAS
-* `%` Can't be edited in CAS
+* `%` Can't be edited in CAS, to be used in 'Copy Sims & Outfits'
 * `+` Works as expected
-* `++` Transferred from CAS back into the game
 * `*1` Should work for all trait related settings
 
 
-### Important
-After exiting CAS answer the 'Save Game?' question with 'Just Switch to Household'.
-In case you click 'Cancel' manually change to the previously played household to finish the outfit edit.
+## Filters / Custom transfer settings
+With `o19.eicas.i 1` (or `o19.edit_in_cas.incllude 1`) one can specify filter flags to include attributes.
 
-If you don't switch to the previously played household TS4 will have a new household with the sims selected and edited before.
-'Cancel' is a valid choice to add a new household and to keep the new household.
-To keep the household change it to played households in CAS and then save and exit the game.
-Without exiting the game it may still be deleted when switching back to the previously played household.  
+With `o19.eicas.e n` (or `o19.edit_in_cas.exclude n`) one can specify filter flags (based on binary bits) to exclude attributes to be transferred from CAS (actually from the temporary household) back to the selected sims.
+Excluded parts will never be transferred, even if they are specified in the include filter.
+The default excluded attributes are: Buffs, Physique and Household Relationships. 
 
-## Custom transfer settings
-With `o19.eicas.f 1` (or `o19.edit_in_cas.filter 1`) one can specify filter flags (based on binary bits) to select the attributes / parts to be transferred from CAS (actually from the temporary household) back to the selected sims.
-
-This should be done before selecting the sims. As an alternative option one can click 'Cancel' after exiting CAS, then use this command and then click on the front door of the lot and select 'Switch To Household'.
+Custom filters should be set before selecting the sims.
+As an alternative option one can click 'Cancel' after exiting CAS, then use the filter commands and finally click on the front door of the lot and select 'Switch To Household'.
 
 Individual values from below can be added, when using `ALL_*` values make sure not to include similar individual values.
-Otherwise use 'or' to get a proper filter pattern.
+Values must not be added multiple times, (AGE + AGE == GENDER and thus a different filter).
+Otherwise, use 'or' to get a proper filter pattern (AGE | AGE == AGE).
 
 Individual facial filters are not supported, always use ALL_FACIAL_ATTRIBUTES to transfer sculpts and sliders.
 
 To transfer body parts, age and skin tones use:
 ```python
-flags = 2**0 + 2**1 + 2**11 + 2**12  # == 1 + 2 + 2048 + 4096 == 6147 = 0x00_0000_1803 = 0b0001_1000_0000_0011
-# o19.eicas.f 6147
+flags = 2**0 + 2**1 + 2**11 + 2**12  # == 1 + 2 + 2048 + 4096 == 6147 = 0x00_0000_1803 = 0b0000_0000_0000_0000_0000_0000_0001_1000_0000_0011
+# The filter flag parameter can be specified in decimal, hexadecimal or binary format. Leading zeros can be omitted.
+# Parameter -1 restores the default values
+# o19.eicas.i 6147
+# or o19.eicas.i 0x1803
+# or o19.eicas.i 0b1_1000_0000_0011
 ```
 
 To transfer everything, including the broken PHYSIQUE values, use:
 ```python
-flags = 2 ** 33 - 1  # == 8589934591 == 0x0001_FFFF_FFFF == 0b0001_1111_1111_1111_1111_1111_1111_1111_1111
-# o19.eicas.f 0b1_1111_1111_1111_1111_1111_1111_1111_1111
-# The filter flag parameter can be specified in decimal, hexadecimal or binary format.
+flags = 2 ** 40 - 1  # == 1099511627775 == 0x00FF_FFFF_FFFF == 0b1111_1111_1111_1111_1111_1111_1111_1111_1111_1111
+# o19.eicas.i 0x00FF_FFFF_FFFF
+# o19.eicas.e 0
 ```
 
 #### Filter flag values
@@ -157,7 +170,9 @@ WHIMS = 2 ** 29
 TAN_LEVEL = 2 ** 30
 PRELOAD_OUTFIT_LIST = 2 ** 31
 HOUSEHOLD_RELATIONSHIPS = 2 ** 32
-ALL = 2 ** 33 - 1
+BUFFS = 2 ** 33
+
+ALL = 2 ** 40 - 1
 ```
 
 # Addendum

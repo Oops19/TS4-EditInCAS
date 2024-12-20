@@ -1,9 +1,9 @@
-EditInCAS v0.0.8 for The Sims 4 v1.111.102 and S4CL v3.9
+EditInCAS v0.0.9 for The Sims 4 v1.111.102 and S4CL v3.9
 Created on 2024-12-20
-v0.0.8
-    Added cheat command to filter (include) attributes / parts
-    Fix Transfer enum
-    Code cleanup
-    Fix transfer of genetic_data which will no longer be merged
-    Added code for whims, suntan, death type
+v0.0.9
+    Pretty print applied filter flags (0b0011 == Body Parts, Age)
+    Replaced 'filter' with 'include' and 'exclude' filters, cheat commands are used to modify the default filters.
+    Default include: Body Parts (Outfits).
+    Default exclude: Buffs, Physique and Household Relationships.
+    Added support for buffs
 
