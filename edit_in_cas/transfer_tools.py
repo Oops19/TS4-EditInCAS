@@ -17,6 +17,7 @@ from sims4communitylib.enums.tags_enum import CommonGameTag
 from sims4communitylib.enums.traits_enum import CommonTraitId
 from sims4communitylib.utils.cas.common_outfit_utils import CommonOutfitUtils
 from sims4communitylib.utils.common_log_registry import CommonLogRegistry, CommonLog
+from sims4communitylib.utils.sims.common_buff_utils import CommonBuffUtils
 from sims4communitylib.utils.sims.common_sim_gender_option_utils import CommonSimGenderOptionUtils
 from sims4communitylib.utils.sims.common_sim_utils import CommonSimUtils
 from sims4communitylib.utils.sims.common_trait_utils import CommonTraitUtils
@@ -98,6 +99,10 @@ class TransferTools:
 
         if Transfer.TRAITS.value == Transfer.TRAITS.value & flags:
             self._transfer_traits(src_sim_info, dst_sim_info)
+            resend_none = True
+
+        if Transfer.BUFFS.value == Transfer.BUFFS.value & flags:
+            self._transfer_buffs(src_sim_info, dst_sim_info)
             resend_none = True
 
         if Transfer.GENDER_DETAILS.value == Transfer.GENDER_DETAILS.value & flags:
@@ -311,30 +316,64 @@ class TransferTools:
         # log.warn(f"Could not transfer gender romance settings from '{src_sim_info}' to '{dst_sim_info}' ({e}).")
         return False
 
+    def _merge_values(self, add_values: List[int], del_values: List[int]) -> Tuple[Set, Set]:
+        remove_values: Set = set()
+        append_values: Set = set()
+        for value in del_values:
+            if value in add_values:
+                continue  # value in both lists, don't delete this value
+            remove_values.add(value)
+
+        for value in add_values:
+            if value in del_values:
+                continue  # value in both lists, don't add this value
+            append_values.add(value)
+        return append_values, remove_values
+
+    def _transfer_buffs(self, src_sim_info: SimInfo, dst_sim_info: SimInfo) -> bool:
+        log.debug(f"Transfer buffs")
+        rv = False
+        try:
+            src_sim_buffs: list = CommonBuffUtils.get_buffs(src_sim_info)
+            dst_sim_buffs: list = CommonBuffUtils.get_buffs(dst_sim_info)
+            append_values, remove_values = self._merge_values(src_sim_buffs, dst_sim_buffs)
+            for value in remove_values:
+                try:
+                    CommonBuffUtils.remove_buff(dst_sim_info, value)
+                except Exception as e:
+                    log.warn(f"\tCould not remove buff '{value}' to '{dst_sim_info}' ({e})")
+                    rv = False
+            for value in append_values:
+                try:
+                    CommonBuffUtils.add_buffs(dst_sim_info, value)
+                except Exception as e:
+                    log.warn(f"\tCould not add buff '{value}' to '{dst_sim_info}' ({e})")
+                    rv = False
+        except Exception as e:
+            log.warn(f"Could not transfer buffs from '{src_sim_info}' to '{dst_sim_info}' ({e}).")
+            rv = False
+        return rv
+
     def _transfer_traits(self, src_sim_info: SimInfo, dst_sim_info: SimInfo) -> bool:
         log.debug(f"Transfer traits")
         rv = False
         try:
-            del_traits: list = CommonTraitUtils.get_equipped_traits(dst_sim_info)
-            add_traits: list = CommonTraitUtils.get_equipped_traits(src_sim_info)
-            for trait in del_traits:
-                if trait in add_traits:
-                    continue  # trait in both lists, don't delete this trait
-                try:
-                    CommonTraitUtils.remove_trait(dst_sim_info, trait)
-                except Exception as e:
-                    log.warn(f"\tCould not remove trait '{trait}' from '{dst_sim_info}' ({e})")
-                    rv = False
+            src_sim_traits: list = CommonTraitUtils.get_equipped_traits(src_sim_info)
+            dst_sim_traits: list = CommonTraitUtils.get_equipped_traits(dst_sim_info)
 
-            for trait in add_traits:
-                if trait in del_traits:
-                    continue  # trait in both lists, don't add this trait
+            append_values, remove_values = self._merge_values(src_sim_traits, dst_sim_traits)
+            for value in remove_values:
                 try:
-                    CommonTraitUtils.add_trait(dst_sim_info, trait)
+                    CommonTraitUtils.remove_trait(dst_sim_info, value)
                 except Exception as e:
-                    log.warn(f"\tCould not add trait to '{dst_sim_info}' '{trait}' ({e})")
+                    log.warn(f"\tCould not remove trait '{value}' to '{dst_sim_info}' '{value}' ({e})")
                     rv = False
-
+            for value in append_values:
+                try:
+                    CommonTraitUtils.add_trait(dst_sim_info, value)
+                except Exception as e:
+                    log.warn(f"\tCould not add trait '{value}' to '{dst_sim_info}' ({e})")
+                    rv = False
         except Exception as e:
             log.warn(f"Could not transfer traits from '{src_sim_info}' to '{dst_sim_info}' ({e}).")
             rv = False

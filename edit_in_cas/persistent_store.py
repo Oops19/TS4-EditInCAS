@@ -5,6 +5,7 @@
 
 
 from edit_in_cas.enums.stage import Stage
+from edit_in_cas.enums.transfer import Transfer
 from sims.sim import Sim
 from ts4lib.utils.singleton import Singleton
 from typing import Tuple, Dict, Union
@@ -27,7 +28,8 @@ class PersistentStore(metaclass=Singleton):
         self._restore: Union[Tuple[int, int, int, str], None] = None  # (sim_id, zone_id, household_id, household_name)
         self._stage = Stage.IDLE  # 0=no data, 1=data, return from CAS, 2=data, switching HH
         self._edit_sim: Union[Tuple[Sim, int], None] = None
-        self._filter_value: int = 1
+        self._include_filter_value: int = Transfer.BODY_PARTS.value
+        self._exclude_filter_value: int = Transfer.PHYSIQUE.value | Transfer.HOUSEHOLD_RELATIONSHIPS.value| Transfer.BUFFS.value
 
     def save_data(self, active_household_id: int, active_sim_info_id: int, tmp_household_id: int, sim_data: Dict[int, Tuple[int, int, bool]], stage: Stage = Stage.HOUSEHOLD_DATA):
         self._storage = (active_household_id, active_sim_info_id, tmp_household_id, sim_data)
@@ -60,11 +62,16 @@ class PersistentStore(metaclass=Singleton):
     def get_edit_sim(self) -> Tuple[Sim, int]:
         return self._edit_sim
 
-    def set_filter(self, filter_value: int):
-        self._filter_value = filter_value
+    def set_include_filter(self, filter_value: int):
+        self._include_filter_value = filter_value
 
-    def get_filter(self) -> int:
-        return self._filter_value
+    def get_include_filter(self) -> int:
+        return self._include_filter_value
 
+    def set_exclude_filter(self, filter_value: int):
+        self._exclude_filter_value = filter_value
+
+    def get_exclude_filter(self) -> int:
+        return self._exclude_filter_value
 
 PersistentStore()

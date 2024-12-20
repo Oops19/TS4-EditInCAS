@@ -28,16 +28,22 @@ class ModInfo(CommonModInfo):
 
     @property
     def _version(self) -> str:
-        return '0.0.8'
+        return '0.0.9'
 
 
 r'''
+v0.0.9
+    Pretty print applied filter flags (0b0011 == Body Parts, Age)
+    Replaced 'filter' with 'include' and 'exclude' filters, cheat commands are used to modify the default filters.
+    Default include: Body Parts (Outfits).
+    Default exclude: Buffs, Physique and Household Relationships.
+    Added support for buffs
 v0.0.8
     Added cheat command to filter (include) attributes / parts
     Fix Transfer enum
     Code cleanup
     Fix transfer of genetic_data which will no longer be merged
-    Added code for whims, suntan, death type
+    Added support for whims, suntan, death type
 v0.0.7
     Tested with a new 'The Sims 4' folder as the old save was broken.
     Only Outfits will be copied back from CAS to avoid replacing attributes with random values.

@@ -131,6 +131,8 @@ class CopySims:
         PersistentStore().save_data(active_household.id, active_sim_info.id, tmp_household.id, sim_infos)
         PersistentStore().save_restore(active_sim_info.sim_id, active_sim_info.zone_id, active_sim_info.household_id, services.get_persistence_service().get_sim_proto_buff(active_sim_info.sim_id).household_name)
         PersistentStore().save_edit_sim(edit_sim, client_id)
+
+        log.debug(f"Launching CAS. Waiting for '_exit_cas'")
         exit_to_cas_immediate_delay: int = 0  # in millisecond
         if exit_to_cas_immediate_delay == 0:
             sims4.commands.client_cheat(f"sims.exit2caswithhouseholdid {edit_sim.id} {edit_sim.household_id}", client_id)
@@ -190,8 +192,11 @@ class CopySims:
                 self._make_sim_instance(sim_info)
                 # TODO - All data which can be copied successfully to CAS and modified there should be applied to the sim
                 # Right now limited to the body parts / outfits.
-                flags = ps.get_filter()
-                log.debug(f"Transfer data {flags:032_b} from {tmp_sim_info} to {sim_info} ...")
+                flags = ps.get_include_filter()
+                flags = flags & (ps.get_exclude_filter() ^ Transfer.ALL.value)
+                s_flags = Transfer.transfer_bits_as_string(flags)
+                log.debug(f"Transfer data {flags:049_b} from {tmp_sim_info} to {sim_info} ...")
+                log.debug(f"\tFlags: {s_flags}")
                 TransferTools().clone_sim(tmp_sim_info, sim_info, flags)
 
             except Exception as e:
@@ -208,7 +213,7 @@ class CopySims:
         op = SwitchActiveHouseholdControl(sim_id=sim_id, zone_id=zone_id, household_id=household_id, household_name=household_name)
         distributor.system.Distributor.instance().send_op_with_no_owner_immediate(op)
         # send_op_with_no_owner_immediate() runs with a tiny delay. The next line is logged and more code may be executed before switching.
-        log.debug(f"Waiting for switch ...")
+        log.debug(f"Waiting for switch into '_cleanup_household'")
 
     def _cleanup_household(self):
         ps = PersistentStore()

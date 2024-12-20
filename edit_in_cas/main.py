@@ -5,6 +5,7 @@
 import re
 from typing import Any
 
+from edit_in_cas.enums.transfer import Transfer
 from edit_in_cas.modinfo import ModInfo
 from edit_in_cas.persistent_store import PersistentStore
 from edit_in_cas.sim_picker import SimPicker
@@ -41,45 +42,61 @@ class Main:
 
     @staticmethod
     @CommonConsoleCommand(
-        ModInfo.get_identity(), 'o19.edit_in_cas.filterx', "Description ...", ('o19.eicas.fx', ),
+        ModInfo.get_identity(), 'o19.edit_in_cas.include', "Description ...", ('o19.eicas.i', ),
         command_arguments=(
-                CommonConsoleCommandArgument('flags', 'int', 'The filter pattern', is_optional=True, default_value='1'),
+                CommonConsoleCommandArgument('flags', 'string', 'The filter pattern', is_optional=True, default_value='-1'),
         )
     )
-    def o19_cheat_edit_in_cas_filter_1(output: CommonConsoleCommandOutput, flags: str = '1'):
+    def o19_cheat_edit_in_cas_include(output: CommonConsoleCommandOutput, _flags: str = '-1'):
         try:
-            if re.match(r'0b[01_]*[01]$', flags):
-                _flags = int(flags, 2)
-            elif re.match(r'0x[0-9A-F_]*[0-9A-F]$', flags):
-                _flags = int(flags, 16)
+            flags = -1
+            if isinstance(_flags, int):
+                flags = _flags
             else:
-                _flags = int(flags)
-            PersistentStore().set_filter(_flags)
-            output(f"Filter set to 0b{flags:034_b} / 0x{flags:012X} / {flags}")
+                if re.match(r'0b[01_]*[01]$', _flags):
+                    flags = int(_flags, 2)
+                elif re.match(r'0x[0-9A-F_]*[0-9A-F]$', _flags):
+                    flags = int(_flags, 16)
+            if flags == -1:
+                flags = Transfer.BODY_PARTS.value
+            PersistentStore().set_include_filter(flags)
+            output(f"Include filter set to 0b{flags:049_b} / 0x{flags:012_X} / {flags}")  # 0b: 40 + 9x_; 0x: 10 + 2x_
+            log.debug(f"Include filter set to 0b{flags:049_b} / 0x{flags:012_X} / {flags}")
+
+            s_flags = Transfer.transfer_bits_as_string(flags)
+            output(f"Flags: {s_flags}")
+            log.debug(f"\tFlags: {s_flags}")
         except Exception as e:
             output(f"Error {e}")
-        output(f"OK")
 
     @staticmethod
     @CommonConsoleCommand(
-        ModInfo.get_identity(), 'o19.edit_in_cas.filter', "Description ...", ('o19.eicas.f', ),
+        ModInfo.get_identity(), 'o19.edit_in_cas.exclude', "Description ...", ('o19.eicas.e', ),
         command_arguments=(
-                CommonConsoleCommandArgument('flags', 'int', 'The filter pattern', is_optional=True, default_value='1'),
+                CommonConsoleCommandArgument('flags', 'string', 'The filter pattern', is_optional=True, default_value='-1'),
         )
     )
-    def o19_cheat_edit_in_cas_filter_1(output: CommonConsoleCommandOutput, flags: int = 1):
+    def o19_cheat_edit_in_cas_exclude(output: CommonConsoleCommandOutput, _flags: str = '-1'):
         try:
-            if re.match(r'0b[01_]*[01]$', str(flags)):
-                _flags = int(str(flags), 2)
-            elif re.match(r'0x[0-9A-F_]*[0-9A-F]$', str(flags)):
-                _flags = int(str(flags), 16)
+            flags = -1
+            if isinstance(_flags, int):
+                flags = _flags
             else:
-                _flags = flags
-            PersistentStore().set_filter(_flags)
-            output(f"Filter set to 0b{flags:034_b} / 0x{flags:012X} / {flags}")
+                if re.match(r'0b[01_]*[01]$', _flags):
+                    flags = int(_flags, 2)
+                elif re.match(r'0x[0-9A-F_]*[0-9A-F]$', _flags):
+                    flags = int(_flags, 16)
+            if flags == -1:
+                flags = Transfer.PHYSIQUE.value | Transfer.HOUSEHOLD_RELATIONSHIPS.value| Transfer.BUFFS.value
+            PersistentStore().set_include_filter(flags)
+            output(f"Exclude filter set to 0b{flags:049_b} / 0x{flags:012_X} / {flags}")  # 0b: 40 + 9x_; 0x: 10 + 2x_
+            log.debug(f"Exclude filter set to 0b{flags:049_b} / 0x{flags:012_X} / {flags}")
+
+            s_flags = Transfer.transfer_bits_as_string(flags)
+            output(f"Flags: {s_flags}")
+            log.debug(f"\tFlags: {s_flags}")
         except Exception as e:
             output(f"Error {e}")
-        output(f"OK")
 
 
 Main()

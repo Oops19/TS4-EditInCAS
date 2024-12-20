@@ -29,7 +29,7 @@ While the copy process itself works fine, displaying the copied data in CAS may 
 
 Currently only 'Outfits' are copied back from CAS to the sim.
 There is no way to detect which values have been replaced by TS4 with random values.
-* All Outfits (+)
+* All Outfits (++)
 * Base Attributes (?)
   * Age (+)
   * Gender (+)
@@ -49,19 +49,32 @@ There is no way to detect which values have been replaced by TS4 with random val
   * Pelt Layers (?)
   * Extended Species (?)
   * Base Trait IDs (?)
-  * Genetic Data (?)
-    * Genetic Data (?)
-    * Genetic Data B (?)
+  * Genetic Data (+%)
 * Walk Styles (+)
-* Traits (?)
-* Gender & Pregnancy settings (?)
+* Traits (+)
+* Custom Texture (?) 
 * Name (+)
 * Pronouns (?)
-* Household Relationship (-)
+* Gender / Details (? *1)
+* Gender / Sexual Orientation (not implemented *1)
+* Gender / Romantic Boundaries (not implemented *1)
+* Species (+)
+* Aspiration (not implemented)
+* Likes & Dislikes (not implemented)
+* Death Cause (?)
+* Household Relationships (not implemented)
+* Preload Outfit List (?%)
+* Tan Level (?%)
+* Whims (?%)
 
-* `-` replaced by random values in CAS
-* `+` seem to work fine every time
-* `?` to be tested
+
+* `?` To be tested
+* `-`or `not implemented` Replaced by random values in CAS
+* `%` Can't be edited in CAS
+* `+` Works as expected
+* `++` Transferred from CAS back into the game
+* `*1` Should work for all trait related settings
+
 
 ### Important
 After exiting CAS answer the 'Save Game?' question with 'Just Switch to Household'.
@@ -72,6 +85,80 @@ If you don't switch to the previously played household TS4 will have a new house
 To keep the household change it to played households in CAS and then save and exit the game.
 Without exiting the game it may still be deleted when switching back to the previously played household.  
 
+## Custom transfer settings
+With `o19.eicas.f 1` (or `o19.edit_in_cas.filter 1`) one can specify filter flags (based on binary bits) to select the attributes / parts to be transferred from CAS (actually from the temporary household) back to the selected sims.
+
+This should be done before selecting the sims. As an alternative option one can click 'Cancel' after exiting CAS, then use this command and then click on the front door of the lot and select 'Switch To Household'.
+
+Individual values from below can be added, when using `ALL_*` values make sure not to include similar individual values.
+Otherwise use 'or' to get a proper filter pattern.
+
+Individual facial filters are not supported, always use ALL_FACIAL_ATTRIBUTES to transfer sculpts and sliders.
+
+To transfer body parts, age and skin tones use:
+```python
+flags = 2**0 + 2**1 + 2**11 + 2**12  # == 1 + 2 + 2048 + 4096 == 6147 = 0x00_0000_1803 = 0b0001_1000_0000_0011
+# o19.eicas.f 6147
+```
+
+To transfer everything, including the broken PHYSIQUE values, use:
+```python
+flags = 2 ** 33 - 1  # == 8589934591 == 0x0001_FFFF_FFFF == 0b0001_1111_1111_1111_1111_1111_1111_1111_1111
+# o19.eicas.f 0b1_1111_1111_1111_1111_1111_1111_1111_1111
+# The filter flag parameter can be specified in decimal, hexadecimal or binary format.
+```
+
+#### Filter flag values
+```python
+NONE = 0
+
+# multiple OUTFITS
+BODY_PARTS = 2 ** 0
+
+# ALL_BASE_ATTRIBUTES contains:
+AGE = 2 ** 1
+GENDER = 2 ** 2
+EXTENDED_SPECIES = 2 ** 3
+ALL_BASE_ATTRIBUTES = AGE + GENDER + EXTENDED_SPECIES
+
+# ALL_PHYSICAL_ATTRIBUTES contains:
+FACIAL_ATTRIBUTE_SCULPTS = 2 ** 4
+FACIAL_FACE_MODIFIERS = 2 ** 5
+FACIAL_BODY_MODIFIERS = 2 ** 6
+ALL_FACIAL_ATTRIBUTES = FACIAL_ATTRIBUTE_SCULPTS + FACIAL_FACE_MODIFIERS + FACIAL_BODY_MODIFIERS
+PHYSIQUE = 2 ** 7
+VOICE_ACTOR = 2 ** 8
+VOICE_EFFECT = 2 ** 9
+VOICE_PITCH = 2 ** 10
+ALL_VOICE = VOICE_ACTOR + VOICE_EFFECT + VOICE_PITCH
+SKIN_TONE = 2 ** 11
+SKIN_TONE_VAL_SHIFT = 2 ** 12
+ALL_SKIN_TONE = SKIN_TONE + SKIN_TONE_VAL_SHIFT
+FLAGS = 2 ** 13
+PELT_LAYERS = 2 ** 14
+BASE_TRAIT_IDS = 2 ** 15
+GENETIC_DATA = 2 ** 16
+ALL_PHYSICAL_ATTRIBUTES = ALL_FACIAL_ATTRIBUTES + ALL_VOICE + ALL_SKIN_TONE + FLAGS + PELT_LAYERS + EXTENDED_SPECIES + BASE_TRAIT_IDS + GENETIC_DATA
+
+# other data
+WALK_STYLES = 2 ** 17
+TRAITS = 2 ** 18  # includes GENDER_* traits
+CUSTOM_TEXTURE = 22 ** 19
+NAME = 2 ** 20
+PRONOUNS = 2 ** 21
+GENDER_DETAILS = 2 ** 22  # based on traits
+GENDER_SEXUAL_ORIENTATION = 2 ** 23  # based on traits?
+GENDER_ROMANTIC_BOUNDARIES = 2 ** 24  # based on traits?
+SPECIES = 2 ** 25
+ASPIRATION = 2 ** 26
+LIKES_DISLIKES = 2 ** 27
+DEATH_CAUSE = 2 ** 28
+WHIMS = 2 ** 29
+TAN_LEVEL = 2 ** 30
+PRELOAD_OUTFIT_LIST = 2 ** 31
+HOUSEHOLD_RELATIONSHIPS = 2 ** 32
+ALL = 2 ** 33 - 1
+```
 
 # Addendum
 

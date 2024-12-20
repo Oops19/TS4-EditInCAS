@@ -58,8 +58,32 @@ class Transfer(CustomEnum):
     TAN_LEVEL = 2 ** 30
     PRELOAD_OUTFIT_LIST = 2 ** 31
     HOUSEHOLD_RELATIONSHIPS = 2 ** 32
-    ALL = 2 ** 33 - 1
+    BUFFS = 2 ** 33
+    # = 2 ** 34
+    # ...
+    # = 2 ** 40
+    ALL = 2 ** 40 - 1
 
+    @staticmethod
+    def transfer_bits_as_string(flags, reverse: bool = False) -> str:
+        """
+        @param flags:
+        @param reverse:
+        @return: String with high-bit left and low-bit right, set reverse=False for a reverse order
+        """
+        filters = []
+        values = [e.value for e in Transfer]  # low-bit left, high-bit right
+        if reverse:
+            values = sorted(values, reverse=True)  # high-bit left, low-bit right
+        for value in values:
+            if value == Transfer.NONE.value:
+                continue
+            if value & flags == value:
+                filters.append(Transfer(value).name.title().replace('_', ' '))
+        if not filters:
+            filters.append(Transfer(Transfer.NONE.value).name.title().replace('_', ' '))
+        _filters = ', '.join(filters)
+        return _filters
 
 r"""
 KEY							| COPY: SimInfoBaseWrapper / self								    	| RESEND: SimInfoBaseWrapper 
@@ -104,5 +128,5 @@ WHIMS                       | - / _ta._current_whims                            
 TAN_LEVEL                   | - / _ta._tan_level                                                    | si.resend_suntan_data
 PRELOAD_OUTFIT_LIST         | - / _ta._preload_outfit_list							        		| resend_preload_outfit_list
 HOUSEHOLD_RELATIONSHIPS     | - / -												        		    | -
-
+BUFFS                       | - / -                                                                 | -
 """
