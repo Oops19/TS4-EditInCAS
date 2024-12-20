@@ -9,6 +9,7 @@ from edit_in_cas.enums.transfer import Transfer
 from edit_in_cas.modinfo import ModInfo
 from edit_in_cas.persistent_store import PersistentStore
 from edit_in_cas.sim_picker import SimPicker
+
 from sims4communitylib.services.commands.common_console_command import CommonConsoleCommand, CommonConsoleCommandArgument
 from sims4communitylib.services.commands.common_console_command_output import CommonConsoleCommandOutput
 from sims4communitylib.utils.common_log_registry import CommonLog, CommonLogRegistry
@@ -44,21 +45,20 @@ class Main:
     @CommonConsoleCommand(
         ModInfo.get_identity(), 'o19.edit_in_cas.include', "Description ...", ('o19.eicas.i', ),
         command_arguments=(
-                CommonConsoleCommandArgument('flags', 'string', 'The filter pattern', is_optional=True, default_value='-1'),
+                CommonConsoleCommandArgument('flags', 'string', 'The filter pattern', is_optional=True, default_value=None),
         )
     )
-    def o19_cheat_edit_in_cas_include(output: CommonConsoleCommandOutput, _flags: str = '-1'):
+    def o19_cheat_edit_in_cas_include(output: CommonConsoleCommandOutput, _flags: str = None):
         try:
-            flags = -1
+            flags = Transfer.BODY_PARTS.value
             if isinstance(_flags, int):
                 flags = _flags
-            else:
+            elif isinstance(_flags, str):
                 if re.match(r'0b[01_]*[01]$', _flags):
                     flags = int(_flags, 2)
-                elif re.match(r'0x[0-9A-F_]*[0-9A-F]$', _flags):
+                elif re.match(r'0x[0-9A-F_]*[0-9A-F]$', _flags, re.RegexFlag.IGNORECASE):
                     flags = int(_flags, 16)
-            if flags == -1:
-                flags = Transfer.BODY_PARTS.value
+
             PersistentStore().set_include_filter(flags)
             output(f"Include filter set to 0b{flags:049_b} / 0x{flags:012_X} / {flags}")  # 0b: 40 + 9x_; 0x: 10 + 2x_
             log.debug(f"Include filter set to 0b{flags:049_b} / 0x{flags:012_X} / {flags}")
@@ -73,22 +73,21 @@ class Main:
     @CommonConsoleCommand(
         ModInfo.get_identity(), 'o19.edit_in_cas.exclude', "Description ...", ('o19.eicas.e', ),
         command_arguments=(
-                CommonConsoleCommandArgument('flags', 'string', 'The filter pattern', is_optional=True, default_value='-1'),
+                CommonConsoleCommandArgument('flags', 'string', 'The filter pattern', is_optional=True, default_value=None),
         )
     )
-    def o19_cheat_edit_in_cas_exclude(output: CommonConsoleCommandOutput, _flags: str = '-1'):
+    def o19_cheat_edit_in_cas_exclude(output: CommonConsoleCommandOutput, _flags: str = None):
         try:
-            flags = -1
+            flags = Transfer.BUFFS.value | Transfer.HOUSEHOLD_RELATIONSHIPS.value
             if isinstance(_flags, int):
                 flags = _flags
-            else:
+            elif isinstance(_flags, str):
                 if re.match(r'0b[01_]*[01]$', _flags):
                     flags = int(_flags, 2)
-                elif re.match(r'0x[0-9A-F_]*[0-9A-F]$', _flags):
+                elif re.match(r'0x[0-9A-F_]*[0-9A-F]$', _flags, re.RegexFlag.IGNORECASE):
                     flags = int(_flags, 16)
-            if flags == -1:
-                flags = Transfer.PHYSIQUE.value | Transfer.HOUSEHOLD_RELATIONSHIPS.value| Transfer.BUFFS.value
-            PersistentStore().set_include_filter(flags)
+
+            PersistentStore().set_exclude_filter(flags)
             output(f"Exclude filter set to 0b{flags:049_b} / 0x{flags:012_X} / {flags}")  # 0b: 40 + 9x_; 0x: 10 + 2x_
             log.debug(f"Exclude filter set to 0b{flags:049_b} / 0x{flags:012_X} / {flags}")
 

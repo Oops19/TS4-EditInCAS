@@ -29,7 +29,7 @@ class PersistentStore(metaclass=Singleton):
         self._stage = Stage.IDLE  # 0=no data, 1=data, return from CAS, 2=data, switching HH
         self._edit_sim: Union[Tuple[Sim, int], None] = None
         self._include_filter_value: int = Transfer.BODY_PARTS.value
-        self._exclude_filter_value: int = Transfer.PHYSIQUE.value | Transfer.HOUSEHOLD_RELATIONSHIPS.value| Transfer.BUFFS.value
+        self._exclude_filter_value: int = Transfer.BUFFS.value | Transfer.HOUSEHOLD_RELATIONSHIPS.value
 
     def save_data(self, active_household_id: int, active_sim_info_id: int, tmp_household_id: int, sim_data: Dict[int, Tuple[int, int, bool]], stage: Stage = Stage.HOUSEHOLD_DATA):
         self._storage = (active_household_id, active_sim_info_id, tmp_household_id, sim_data)

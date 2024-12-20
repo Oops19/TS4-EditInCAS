@@ -44,7 +44,7 @@ class Transfer(CustomEnum):
     # other data
     WALK_STYLES = 2 ** 17
     TRAITS = 2 ** 18  # includes GENDER_* traits
-    CUSTOM_TEXTURE = 22 ** 19
+    CUSTOM_TEXTURE = 2 ** 19
     NAME = 2 ** 20
     PRONOUNS = 2 ** 21
     GENDER_DETAILS = 2 ** 22  # based on traits

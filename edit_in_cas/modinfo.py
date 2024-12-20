@@ -28,10 +28,16 @@ class ModInfo(CommonModInfo):
 
     @property
     def _version(self) -> str:
-        return '0.0.9'
+        return '0.0.10'
 
 
 r'''
+v0.0.10
+    Fix CUSTOM_TEXTURE enum value
+    Fix add_buff code
+    Fix 'exclude' filter and parsing of hex values
+    Fix physique
+    Added `o19.eicas.tt {filter}` to clone sims without entering CAS. filter==None == use include/exclude values; otherwise clone f(filter)
 v0.0.9
     Pretty print applied filter flags (0b0011 == Body Parts, Age)
     Replaced 'filter' with 'include' and 'exclude' filters, cheat commands are used to modify the default filters.

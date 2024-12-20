@@ -122,7 +122,7 @@ class TransferTools:
             if Transfer.ALL_BASE_ATTRIBUTES.value == Transfer.ALL_BASE_ATTRIBUTES.value & flags:
                 self._transfer_all_base_attributes(src_sim_info, dst_sim_info)
                 resend_age = True
-                resend_physical_attributes = True
+                resend_extended_species = True
             else:
                 if Transfer.AGE.value == Transfer.AGE.value & flags:
                     self._transfer_attributes(src_sim_info, dst_sim_info, {"age", })
@@ -131,15 +131,19 @@ class TransferTools:
                     self._transfer_attributes(src_sim_info, dst_sim_info, {"gender", })
                     resend_none = True
                     resend_age = True
-                    resend_physical_attributes = True
+                    resend_extended_species = True
                 if Transfer.EXTENDED_SPECIES.value == Transfer.EXTENDED_SPECIES.value & flags:
                     self._transfer_attributes(src_sim_info, dst_sim_info, {"extended_species", })
                     resend_extended_species = True
 
+            if Transfer.PHYSIQUE.value == Transfer.PHYSIQUE.value & flags:
+                src_sim_info._get_fit_fat()
+                self._transfer_attributes(src_sim_info, dst_sim_info, {"physique", "fat", "fit"})
+                resend_physique = True
             if Transfer.ALL_PHYSICAL_ATTRIBUTES .value == Transfer.ALL_PHYSICAL_ATTRIBUTES.value & flags:
+                src_sim_info._get_fit_fat()
                 self._transfer_all_physical_attributes(src_sim_info, dst_sim_info)
                 resend_physical_attributes = True
-                resend_physique = True
             else:
                 if Transfer.ALL_FACIAL_ATTRIBUTES.value == Transfer.ALL_FACIAL_ATTRIBUTES.value & flags:
                     self._transfer_attributes(src_sim_info, dst_sim_info, {"facial_attributes", })
@@ -159,9 +163,7 @@ class TransferTools:
                     if Transfer.FACIAL_BODY_MODIFIERS.value == Transfer.FACIAL_BODY_MODIFIERS.value & flags:
                         pass
                         resend_facial_attributes = True
-                if Transfer.PHYSIQUE.value == Transfer.PHYSIQUE.value & flags:
-                    self._transfer_attributes(src_sim_info, dst_sim_info, {"physique", })
-                    resend_physique = True
+
                 if Transfer.VOICE_ACTOR.value == Transfer.VOICE_ACTOR.value & flags:
                     self._transfer_attributes(src_sim_info, dst_sim_info, {"voice_actor", })
                     resend_voice_actor = True
@@ -193,21 +195,20 @@ class TransferTools:
                     self._transfer_attributes(src_sim_info, dst_sim_info, {"genetic_data", })
                     resend_genetic_data = True
 
+
         # Send updates one time
         if resend_age:
             dst_sim_info.resend_age()
         if resend_extended_species:
             dst_sim_info.resend_extended_species()
-
+        if resend_physique:
+            dst_sim_info._setup_fitness_commodities()
+            dst_sim_info.resend_physique()
         if resend_physical_attributes:
             SimInfoBaseWrapper.resend_physical_attributes(dst_sim_info)
-            dst_sim_info._set_fit_fat()
         else:
             if resend_facial_attributes:
                 dst_sim_info.resend_facial_attributes()
-            if resend_physique:
-                dst_sim_info.resend_physique()
-                dst_sim_info._set_fit_fat()
             if resend_voice_actor:
                 dst_sim_info.resend_voice_actor()
             if resend_voice_effect:
@@ -241,7 +242,7 @@ class TransferTools:
             dst_sim_info.resend_current_whims()
 
     def _transfer_attributes(self, src_sim_info: SimInfo, dst_sim_info: SimInfo, attributes: Set[str]) -> bool:
-        log.debug(f"Transfer '{attributes}'")
+        log.debug(f"Transfer '{' ,'.join(attributes)}'")
         rv = True
         for attribute in attributes:
             try:
@@ -345,7 +346,7 @@ class TransferTools:
                     rv = False
             for value in append_values:
                 try:
-                    CommonBuffUtils.add_buffs(dst_sim_info, value)
+                    CommonBuffUtils.add_buff(dst_sim_info, value)
                 except Exception as e:
                     log.warn(f"\tCould not add buff '{value}' to '{dst_sim_info}' ({e})")
                     rv = False

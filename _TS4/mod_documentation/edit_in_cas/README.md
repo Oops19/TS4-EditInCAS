@@ -24,7 +24,8 @@ Without exiting the game it may still be deleted when switching back to the prev
 
 ## Issues
 When cloning sims to a new household this works properly within the game.
-Anyhow the UI (CAS) is not always updated properly.  
+Anyhow the UI (CAS) is not always updated properly.
+Copying attributes from 'Occult' sims can fail, even when they are in their normal form.  
 
 ### Things to avoid in CAS:
 * Add, import and/or delete sims (new, replaced and/or removed sims are ignored)
@@ -49,7 +50,7 @@ There is no way to detect which values have been replaced by TS4 with random val
     * Sculpts (individual transfer not possible)
     * Face Modifiers (individual transfer not possible)
     * Body Modifiers (individual transfer not possible)
-  * Physique (-)
+  * Physique (?)
   * Voice
     * Voice Actor (+)
     * Voice Pitch (+)
@@ -93,7 +94,7 @@ With `o19.eicas.i 1` (or `o19.edit_in_cas.incllude 1`) one can specify filter fl
 
 With `o19.eicas.e n` (or `o19.edit_in_cas.exclude n`) one can specify filter flags (based on binary bits) to exclude attributes to be transferred from CAS (actually from the temporary household) back to the selected sims.
 Excluded parts will never be transferred, even if they are specified in the include filter.
-The default excluded attributes are: Buffs, Physique and Household Relationships. 
+The default excluded attributes are: Buffs and Household Relationships. 
 
 Custom filters should be set before selecting the sims.
 As an alternative option one can click 'Cancel' after exiting CAS, then use the filter commands and finally click on the front door of the lot and select 'Switch To Household'.

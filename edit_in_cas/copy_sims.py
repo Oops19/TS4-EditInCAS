@@ -39,6 +39,7 @@ from sims4communitylib.utils.sims.common_household_utils import CommonHouseholdU
 from sims4communitylib.utils.sims.common_sim_gender_option_utils import CommonSimGenderOptionUtils
 from sims4communitylib.utils.sims.common_sim_spawn_utils import CommonSimSpawnUtils
 from sims4communitylib.utils.sims.common_sim_utils import CommonSimUtils
+from sims4communitylib.utils.sims.common_species_utils import CommonSpeciesUtils
 from sims4communitylib.utils.sims.common_trait_utils import CommonTraitUtils
 from ts4lib.custom_enums.custom_outfit_category import CustomOutfitCategory
 from ts4lib.utils.outfit_utilities import OutfitUtilities
@@ -60,13 +61,14 @@ class CopySims:
         """
 
         # new_sim_info = CommonSimSpawnUtils.clone_sim(sim_info, add_to_household=False)  # breaks the sim
-        new_sim_info = CommonSimSpawnUtils.create_human_sim_info(age=sim_info.age, gender=sim_info.gender, first_name=sim_info.first_name, last_name=sim_info.last_name)
+        # new_sim_info = CommonSimSpawnUtils.create_human_sim_info(age=sim_info.age, gender=sim_info.gender, first_name=sim_info.first_name, last_name=sim_info.last_name)
+        # new_sim_info = CommonSimSpawnUtils.create_sim_info(species=CommonSpeciesUtils.get_species(sim_info))
+        new_sim_info = CommonSimSpawnUtils.create_sim_info(species=CommonSpeciesUtils.get_species(sim_info), age=sim_info.age, gender=sim_info.gender, first_name=sim_info.first_name, last_name=sim_info.last_name)
         self._make_sim_instance(new_sim_info)
         TransferTools().clone_sim(sim_info, new_sim_info)  # copied attributes may or may not show in CAS
         # TransferTools()._clone_sim(sim_info, new_sim_info, flags=Transfer.BODY_PARTS.value) # Clone only Body Parts
         CommonHouseholdUtils.move_sim_to_household(new_sim_info, target_household.id)
         return new_sim_info
-
 
     def _make_sim_instance(self, sim_info: SimInfo) -> bool:
         if not sim_info.is_instanced(allow_hidden_flags=ALL_HIDDEN_REASONS):
