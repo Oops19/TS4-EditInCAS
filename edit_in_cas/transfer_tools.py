@@ -335,9 +335,12 @@ class TransferTools:
         log.debug(f"Transfer buffs")
         rv = False
         try:
+
             src_sim_buffs: list = CommonBuffUtils.get_buffs(src_sim_info)
+            src_sim_buff_ids = [CommonBuffUtils.get_buff_id(buff) for buff in src_sim_buffs]
             dst_sim_buffs: list = CommonBuffUtils.get_buffs(dst_sim_info)
-            append_values, remove_values = self._merge_values(src_sim_buffs, dst_sim_buffs)
+            dst_sim_buff_ids = [CommonBuffUtils.get_buff_id(buff) for buff in dst_sim_buffs]
+            append_values, remove_values = self._merge_values(src_sim_buff_ids, dst_sim_buff_ids)
             for value in remove_values:
                 try:
                     CommonBuffUtils.remove_buff(dst_sim_info, value)
