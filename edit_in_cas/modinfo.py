@@ -28,10 +28,12 @@ class ModInfo(CommonModInfo):
 
     @property
     def _version(self) -> str:
-        return '0.0.10'
+        return '0.0.11'
 
 
 r'''
+v0.0.11
+    Cleanup imports
 v0.0.10
     Fix CUSTOM_TEXTURE enum value
     Fix add_buff code

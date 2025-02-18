@@ -5,7 +5,7 @@
 
 
 import time
-from typing import Tuple, Dict, Union, List
+from typing import Tuple, Dict
 
 import distributor
 import services
@@ -20,29 +20,18 @@ from edit_in_cas.modinfo import ModInfo
 from edit_in_cas.persistent_store import PersistentStore
 from edit_in_cas.transfer_tools import TransferTools
 from objects import ALL_HIDDEN_REASONS, HiddenReasonFlag
-from routing.walkstyle.walkstyle_request import WalkStyleRequest
 from sims.household import Household
-from sims.outfits.outfit_enums import OutfitCategory
-from sims.sim import Sim
 from sims.sim_info import SimInfo
-from sims.sim_info_base_wrapper import SimInfoBaseWrapper
 from sims.sim_spawner import SimSpawner
-from sims4communitylib.enums.tags_enum import CommonGameTag
-from sims4communitylib.enums.traits_enum import CommonTraitId
 from sims4communitylib.events.event_handling.common_event_registry import CommonEventRegistry
 from sims4communitylib.events.interval.common_interval_event_service import CommonIntervalEventRegistry
 from sims4communitylib.events.zone_spin.events.zone_late_load import S4CLZoneLateLoadEvent
-from sims4communitylib.utils.cas.common_outfit_utils import CommonOutfitUtils
 from sims4communitylib.utils.common_log_registry import CommonLog, CommonLogRegistry
 from sims4communitylib.utils.common_time_utils import CommonTimeUtils
 from sims4communitylib.utils.sims.common_household_utils import CommonHouseholdUtils
-from sims4communitylib.utils.sims.common_sim_gender_option_utils import CommonSimGenderOptionUtils
 from sims4communitylib.utils.sims.common_sim_spawn_utils import CommonSimSpawnUtils
 from sims4communitylib.utils.sims.common_sim_utils import CommonSimUtils
 from sims4communitylib.utils.sims.common_species_utils import CommonSpeciesUtils
-from sims4communitylib.utils.sims.common_trait_utils import CommonTraitUtils
-from ts4lib.custom_enums.custom_outfit_category import CustomOutfitCategory
-from ts4lib.utils.outfit_utilities import OutfitUtilities
 from ts4lib.utils.simple_ui_notification import SimpleUINotification
 from ui.ui_dialog_notification import UiDialogNotification
 
