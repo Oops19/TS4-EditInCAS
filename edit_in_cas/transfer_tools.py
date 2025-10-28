@@ -1,18 +1,23 @@
 #
 # LICENSE https://creativecommons.org/licenses/by/4.0/ https://creativecommons.org/licenses/by/4.0/legalcode
-# © 2024 https://github.com/Oops19
+# © 2025 https://github.com/Oops19
 #
 
 
 from typing import Union, Tuple, List, Set
 
-from edit_in_cas.enums.transfer import Transfer
 from edit_in_cas.modinfo import ModInfo
-from routing.walkstyle.walkstyle_request import WalkStyleRequest
-from sims.outfits.outfit_enums import OutfitCategory
+from edit_in_cas.enums.transfer import Transfer
+
+from ts4lib.utils.outfit_utilities import OutfitUtilities
+from ts4lib.custom_enums.custom_outfit_category import CustomOutfitCategory
+
 from sims.sim import Sim
 from sims.sim_info import SimInfo
 from sims.sim_info_base_wrapper import SimInfoBaseWrapper
+from sims.outfits.outfit_enums import OutfitCategory
+from routing.walkstyle.walkstyle_request import WalkStyleRequest
+
 from sims4communitylib.enums.tags_enum import CommonGameTag
 from sims4communitylib.enums.traits_enum import CommonTraitId
 from sims4communitylib.utils.cas.common_outfit_utils import CommonOutfitUtils
@@ -21,8 +26,6 @@ from sims4communitylib.utils.sims.common_buff_utils import CommonBuffUtils
 from sims4communitylib.utils.sims.common_sim_gender_option_utils import CommonSimGenderOptionUtils
 from sims4communitylib.utils.sims.common_sim_utils import CommonSimUtils
 from sims4communitylib.utils.sims.common_trait_utils import CommonTraitUtils
-from ts4lib.custom_enums.custom_outfit_category import CustomOutfitCategory
-from ts4lib.utils.outfit_utilities import OutfitUtilities
 
 log: CommonLog = CommonLogRegistry.get().register_log(ModInfo.get_identity(), 'TransferTools')
 log.enable()

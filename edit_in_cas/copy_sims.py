@@ -1,11 +1,20 @@
 #
 # LICENSE https://creativecommons.org/licenses/by/4.0/ https://creativecommons.org/licenses/by/4.0/legalcode
-# © 2024 https://github.com/Oops19
+# © 2025 https://github.com/Oops19
 #
 
 
 import time
-from typing import Tuple, Dict
+from typing import Tuple, Dict, List
+from objects import ALL_HIDDEN_REASONS, HiddenReasonFlag
+
+from edit_in_cas.modinfo import ModInfo
+from edit_in_cas.enums.transfer import Transfer
+from edit_in_cas.transfer_tools import TransferTools
+from edit_in_cas.enums.stage import Stage
+from edit_in_cas.persistent_store import PersistentStore
+
+from ts4lib.utils.simple_ui_notification import SimpleUINotification
 
 import distributor
 import services
@@ -14,26 +23,22 @@ import sims4.commands
 from clock import ClockSpeedMode
 from distributor.ops import SwitchActiveHouseholdControl
 from distributor.system import Distributor
-from edit_in_cas.enums.stage import Stage
-from edit_in_cas.enums.transfer import Transfer
-from edit_in_cas.modinfo import ModInfo
-from edit_in_cas.persistent_store import PersistentStore
-from edit_in_cas.transfer_tools import TransferTools
-from objects import ALL_HIDDEN_REASONS, HiddenReasonFlag
+from ui.ui_dialog_notification import UiDialogNotification
+
 from sims.household import Household
 from sims.sim_info import SimInfo
 from sims.sim_spawner import SimSpawner
+
+from sims4communitylib.utils.common_log_registry import CommonLog, CommonLogRegistry
+from sims4communitylib.utils.sims.common_household_utils import CommonHouseholdUtils
+from sims4communitylib.utils.sims.common_sim_spawn_utils import CommonSimSpawnUtils
+from sims4communitylib.utils.sims.common_species_utils import CommonSpeciesUtils
 from sims4communitylib.events.event_handling.common_event_registry import CommonEventRegistry
 from sims4communitylib.events.interval.common_interval_event_service import CommonIntervalEventRegistry
 from sims4communitylib.events.zone_spin.events.zone_late_load import S4CLZoneLateLoadEvent
-from sims4communitylib.utils.common_log_registry import CommonLog, CommonLogRegistry
 from sims4communitylib.utils.common_time_utils import CommonTimeUtils
-from sims4communitylib.utils.sims.common_household_utils import CommonHouseholdUtils
-from sims4communitylib.utils.sims.common_sim_spawn_utils import CommonSimSpawnUtils
 from sims4communitylib.utils.sims.common_sim_utils import CommonSimUtils
-from sims4communitylib.utils.sims.common_species_utils import CommonSpeciesUtils
-from ts4lib.utils.simple_ui_notification import SimpleUINotification
-from ui.ui_dialog_notification import UiDialogNotification
+
 
 log: CommonLog = CommonLogRegistry.get().register_log(ModInfo.get_identity(), 'CopySims')
 log.enable()
@@ -49,13 +54,9 @@ class CopySims:
         @return: SimInfo of new sim
         """
 
-        # new_sim_info = CommonSimSpawnUtils.clone_sim(sim_info, add_to_household=False)  # breaks the sim
-        # new_sim_info = CommonSimSpawnUtils.create_human_sim_info(age=sim_info.age, gender=sim_info.gender, first_name=sim_info.first_name, last_name=sim_info.last_name)
-        # new_sim_info = CommonSimSpawnUtils.create_sim_info(species=CommonSpeciesUtils.get_species(sim_info))
         new_sim_info = CommonSimSpawnUtils.create_sim_info(species=CommonSpeciesUtils.get_species(sim_info), age=sim_info.age, gender=sim_info.gender, first_name=sim_info.first_name, last_name=sim_info.last_name)
         self._make_sim_instance(new_sim_info)
         TransferTools().clone_sim(sim_info, new_sim_info)  # copied attributes may or may not show in CAS
-        # TransferTools()._clone_sim(sim_info, new_sim_info, flags=Transfer.BODY_PARTS.value) # Clone only Body Parts
         CommonHouseholdUtils.move_sim_to_household(new_sim_info, target_household.id)
         return new_sim_info
 
@@ -82,6 +83,7 @@ class CopySims:
 
         xxx = {}
         for sim_info in sim_info_list:
+            log.debug(f"Copying {sim_info}")
             if sim_info.is_instanced(allow_hidden_flags=HiddenReasonFlag.NONE):
                 de_spawn_sim = False
             else:
