@@ -5,7 +5,7 @@
 
 
 import time
-from typing import Tuple, Dict, List
+from typing import Tuple, Dict
 from objects import ALL_HIDDEN_REASONS, HiddenReasonFlag
 
 from edit_in_cas.modinfo import ModInfo
@@ -16,18 +16,17 @@ from edit_in_cas.persistent_store import PersistentStore
 
 from ts4lib.utils.simple_ui_notification import SimpleUINotification
 
-import distributor
-import services
 import sims4
 import sims4.commands
+from sims.sim_info import SimInfo
+from sims.household import Household
+from sims.sim_spawner import SimSpawner
+import distributor
+import services
 from clock import ClockSpeedMode
 from distributor.ops import SwitchActiveHouseholdControl
 from distributor.system import Distributor
 from ui.ui_dialog_notification import UiDialogNotification
-
-from sims.household import Household
-from sims.sim_info import SimInfo
-from sims.sim_spawner import SimSpawner
 
 from sims4communitylib.utils.common_log_registry import CommonLog, CommonLogRegistry
 from sims4communitylib.utils.sims.common_household_utils import CommonHouseholdUtils
@@ -38,7 +37,6 @@ from sims4communitylib.events.interval.common_interval_event_service import Comm
 from sims4communitylib.events.zone_spin.events.zone_late_load import S4CLZoneLateLoadEvent
 from sims4communitylib.utils.common_time_utils import CommonTimeUtils
 from sims4communitylib.utils.sims.common_sim_utils import CommonSimUtils
-
 
 log: CommonLog = CommonLogRegistry.get().register_log(ModInfo.get_identity(), 'CopySims')
 log.enable()

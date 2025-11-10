@@ -4,11 +4,15 @@
 #
 
 
+from typing import Tuple, Dict, Union
+
 from edit_in_cas.enums.stage import Stage
 from edit_in_cas.enums.transfer import Transfer
-from sims.sim import Sim
+
 from ts4lib.utils.singleton import Singleton
-from typing import Tuple, Dict, Union
+
+from sims.sim import Sim
+
 
 try:
     from sims.household import Household

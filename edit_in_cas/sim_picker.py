@@ -10,16 +10,15 @@ from edit_in_cas.copy_sims import CopySims
 from edit_in_cas.modinfo import ModInfo
 
 from sims.sim_info import SimInfo
+
 from sims4communitylib.dialogs.option_dialogs.common_choose_sims_option_dialog import CommonChooseSimsOptionDialog
 from sims4communitylib.dialogs.option_dialogs.options.sims.common_dialog_sim_option import CommonDialogSimOption
 from sims4communitylib.dialogs.option_dialogs.options.sims.common_dialog_sim_option_context import CommonDialogSimOptionContext
-
 from sims4communitylib.utils.localization.common_localization_utils import CommonLocalizationUtils
-
 from sims4communitylib.utils.common_log_registry import CommonLog, CommonLogRegistry
 from sims4communitylib.utils.sims.common_sim_utils import CommonSimUtils
 
-log: CommonLog = CommonLogRegistry.get().register_log(ModInfo.get_identity(), 'Main')
+log: CommonLog = CommonLogRegistry.get().register_log(ModInfo.get_identity(), 'SimPicker')
 log.enable()
 
 

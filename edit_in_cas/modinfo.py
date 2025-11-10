@@ -28,10 +28,12 @@ class ModInfo(CommonModInfo):
 
     @property
     def _version(self) -> str:
-        return '0.0.11'
+        return '0.0.12'
 
 
 r'''
+v0.0.12
+    Fixed a logger name
 v0.0.11
     Cleanup imports
 v0.0.10

@@ -7,9 +7,9 @@
 from typing import Any
 
 from edit_in_cas.main import Main
-from interactions.context import InteractionContext
-from sims.sim import Sim
 
+from sims.sim import Sim
+from interactions.context import InteractionContext
 
 from sims4communitylib.classes.interactions.common_immediate_super_interaction import CommonImmediateSuperInteraction
 from sims4communitylib.classes.testing.common_execution_result import CommonExecutionResult

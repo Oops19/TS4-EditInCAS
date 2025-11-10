@@ -1,5 +1,5 @@
-EditInCAS v0.0.11 for The Sims 4 v1.119.109 and S4CL v3.15
-Created on 2025-11-09
-v0.0.11
-    Cleanup imports
+EditInCAS v0.0.12 for The Sims 4 v1.119.109 and S4CL v3.15
+Created on 2025-11-10
+v0.0.12
+    Fixed a logger name
 
