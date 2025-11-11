@@ -1,5 +1,6 @@
-EditInCAS v0.0.12 for The Sims 4 v1.119.109 and S4CL v3.15
-Created on 2025-11-10
-v0.0.12
-    Fixed a logger name
+EditInCAS v0.0.13 for The Sims 4 v1.119.109 and S4CL v3.15
+Created on 2025-11-11
+v0.0.13
+    Pause the game before opening the sim picker
+    Polish the README
 

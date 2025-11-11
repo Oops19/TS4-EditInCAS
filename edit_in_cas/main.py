@@ -14,6 +14,7 @@ from edit_in_cas.sim_picker import SimPicker
 from sims4communitylib.services.commands.common_console_command import CommonConsoleCommand, CommonConsoleCommandArgument
 from sims4communitylib.services.commands.common_console_command_output import CommonConsoleCommandOutput
 from sims4communitylib.utils.common_log_registry import CommonLog, CommonLogRegistry
+from sims4communitylib.utils.common_time_utils import CommonTimeUtils
 
 log: CommonLog = CommonLogRegistry.get().register_log(ModInfo.get_identity(), 'Main')
 log.enable()
@@ -29,6 +30,7 @@ class Main:
         Main.initialized = True
 
     def do_it(self):
+        CommonTimeUtils.pause_the_game()
         SimPicker().show_sim_picker_dialog('Edit Sims in CAS', 'Select 1-8 sims. 1 TYAE sim is required to exit CAS.')
 
     @staticmethod

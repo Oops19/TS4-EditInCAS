@@ -1,45 +1,52 @@
-# Edit random Sims and Outfits in CAS
-This funky mod allows to pick 1-8 sims and to edit their standard outfits in CAS.
+# 🧍‍♂️ Edit Random Sims and Outfits in CAS
 
-It is not meant to edit Bathing, Situation, Career, Special, Towel, Fashion and/or Batuu outfits.
-I suggest to create these outfits as Everyday 3-5, Swimming 3-5, etc. and to use [Copy Outfits](https://github.com/Oops19/TS4-CopyOutfits) to transfer them.
+This mod allows you to select 1–8 Sims and edit their standard outfits directly in CAS. It’s a handy tool for customizing Sims without diving into full household management.
 
-It ignores occults, at least nothing has been added to support them.
+> ⚠️ This mod is **not intended** for editing Bathing, Situation, Career, Special, Towel, Fashion, or Batuu outfits.  
+> To work around this, create those outfits as Everyday 3–5, Swimming 3–5, etc., and use [Copy Outfits](https://github.com/Oops19/TS4-CopyOutfits) to transfer them.
 
-## Usage
-Enable cheat menus (unless already enabled). Shift-Click on a sim and select 'Modify Sims in CAS.
-Or open the cheat console with Shift+Ctrl+C and enter the cheat command `o19.eicas` or `o19.edit_in_cas` to open the sim picker and to enter CAS.
+Occult Sims are ignored — no special support has been added for them.
 
-In CAS the outfits can be modified and new outfits can be added.
-All CAS parts including makeup, hats, etc. can be modified
+## 🚀 Usage
+1. **Enable cheat menus** (if not already enabled).
+2. **Shift-click** on a Sim and select **Modify Sims in CAS**.
+3. Or open the cheat console with `Shift+Ctrl+C` and enter:
+   - `o19.eicas`  
+   - `o19.edit_in_cas`
 
-### Important
-After exiting CAS answer the 'Save Game?' question with 'Just Switch to Household'.
-In case you click 'Cancel' manually change to the previously played household to finish the outfit edit.
+This opens the Sim picker and launches CAS. 
+You can modify outfits and add new ones.
+All CAS parts — makeup, hats, accessories — are editable in CAS.
 
-If you don't switch to the previously played household TS4 will have a new household with the sims selected and edited before.
-'Cancel' is a valid choice to add a new household and to keep the new household.
-To keep the household change it to played households in CAS and then save and exit the game.
-Without exiting the game it may still be deleted when switching back to the previously played household. 
+## ⚠️ Important Notes
+After exiting CAS, **choose "Just Switch to Household"** when prompted to save.
 
-## Issues
-When cloning sims to a new household this works properly within the game.
-Anyhow the UI (CAS) is not always updated properly.
-Copying attributes from 'Occult' sims can fail, even when they are in their normal form.  
+- If you click **Cancel**, manually switch back to the previously played household to complete the edit.
+- If you don’t switch back, TS4 will treat the edited Sims as a new household.
+- To keep the new household:
+  - Mark it as "Played" in CAS
+  - Save and exit the game
+  - Otherwise, it may be deleted when switching households
 
-### Things to avoid in CAS:
-* Add, import and/or delete sims (new, replaced and/or removed sims are ignored)
-* Remove outfits (they will not be removed from the original sim, new outfits will be added)
-* Modify age (except in the range Teen - Elder)
-* Add, remove or modify occults. This seems to work only for some occults.
+## 🛠️ Known Issues
+- **Pause the game** to make sure the computer has enough resources to process the cloning process. 
+- Cloning sims to a new household works properly, but if you encounter issues in CAS with 'random' sims showing up it is likely caused by a busy CPU.
+- Copying attributes from Occult Sims may fail, even in their normal form.
 
-### Transferred attributes
-The code used is from Copy Outfits, so it works fine and supports filtering.
-The copy process of attributes itself works fine, displaying the copied data in CAS may fail.
+## 🚫 Things to Avoid in CAS
 
-Currently only 'Outfits' are copied back from CAS to the sim.
-There is no way to detect which values have been replaced by TS4 with random values and which have been modified.
+- Adding, importing, or deleting Sims (these changes are ignored)
+- Removing outfits (they won’t be removed from the original Sim)
+- Changing age outside the Teen–Elder range
+- Adding, removing, or modifying occult status.
 
+## ✅ Transferred Attributes
+This mod uses code from **Copy Outfits**, with full filtering support.
+While the copy process works reliably, CAS may not always display the copied data correctly.
+Currently, **only outfits** are copied back to the original Sim.
+There’s no way to detect which values were replaced randomly by TS4 due to CPU issues versus intentionally modified.
+
+### Included:
 * Body Parts / All Outfits (++)
 * Base Attributes
   * Age (+)

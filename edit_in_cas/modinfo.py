@@ -28,10 +28,13 @@ class ModInfo(CommonModInfo):
 
     @property
     def _version(self) -> str:
-        return '0.0.12'
+        return '0.0.13'
 
 
 r'''
+v0.0.13
+    Pause the game before opening the sim picker
+    Polish the README
 v0.0.12
     Fixed a logger name
 v0.0.11
