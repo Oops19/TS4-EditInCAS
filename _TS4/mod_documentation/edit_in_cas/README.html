@@ -1,47 +1,52 @@
-<h1>Edit random Sims and Outfits in CAS</h1>
-This funky mod allows to pick 1-8 sims and to edit their standard outfits in CAS.<br/>
+<h1>🧍‍♂️ Edit Random Sims and Outfits in CAS</h1>
 <br/>
-It is not meant to edit Bathing, Situation, Career, Special, Towel, Fashion and/or Batuu outfits.<br/>
-I suggest to create these outfits as Everyday 3-5, Swimming 3-5, etc. and to use <a href='https://github.com/Oops19/TS4-CopyOutfits'>Copy Outfits</a> to transfer them.<br/>
+This mod allows you to select 1–8 Sims and edit their standard outfits directly in CAS. It’s a handy tool for customizing Sims without diving into full household management.<br/>
 <br/>
-It ignores occults, at least nothing has been added to support them.<br/>
+> ⚠️ This mod is **not intended** for editing Bathing, Situation, Career, Special, Towel, Fashion, or Batuu outfits.<br/>
+> To work around this, create those outfits as Everyday 3–5, Swimming 3–5, etc., and use <a href='https://github.com/Oops19/TS4-CopyOutfits'>Copy Outfits</a> to transfer them.<br/>
 <br/>
-<h2>Usage</h2>
-Enable cheat menus (unless already enabled). Shift-Click on a sim and select 'Modify Sims in CAS.<br/>
-Or open the cheat console with Shift+Ctrl+C and enter the cheat command <i>o19.eicas</i> or <i>o19.edit_in_cas</i> to open the sim picker and to enter CAS.<br/>
+Occult Sims are ignored — no special support has been added for them.<br/>
 <br/>
-In CAS the outfits can be modified and new outfits can be added.<br/>
-All CAS parts including makeup, hats, etc. can be modified<br/>
+<h2>🚀 Usage</h2>
+1. **Enable cheat menus** (if not already enabled).<br/>
+2. **Shift-click** on a Sim and select **Modify Sims in CAS**.<br/>
+3. Or open the cheat console with <i>Shift+Ctrl+C</i> and enter:<br/>
+- <i>o19.eicas</i><br/>
+- <i>o19.edit_in_cas</i><br/>
 <br/>
-<h3>Important</h3>
-After exiting CAS answer the 'Save Game?' question with 'Just Switch to Household'.<br/>
-In case you click 'Cancel' manually change to the previously played household to finish the outfit edit.<br/>
+This opens the Sim picker and launches CAS.<br/>
+You can modify outfits and add new ones.<br/>
+All CAS parts — makeup, hats, accessories — are editable in CAS.<br/>
 <br/>
-If you don't switch to the previously played household TS4 will have a new household with the sims selected and edited before.<br/>
-'Cancel' is a valid choice to add a new household and to keep the new household.<br/>
-To keep the household change it to played households in CAS and then save and exit the game.<br/>
-Without exiting the game it may still be deleted when switching back to the previously played household.<br/>
+<h2>⚠️ Important Notes</h2>
+After exiting CAS, **choose "Just Switch to Household"** when prompted to save.<br/>
 <br/>
-<h2>Issues</h2>
-When cloning sims to a new household this works properly within the game.<br/>
-Anyhow the UI (CAS) is not always updated properly.<br/>
-Copying attributes from 'Occult' sims can fail, even when they are in their normal form.<br/>
+- If you click **Cancel**, manually switch back to the previously played household to complete the edit.<br/>
+- If you don’t switch back, TS4 will treat the edited Sims as a new household.<br/>
+- To keep the new household:<br/>
+- Mark it as "Played" in CAS<br/>
+- Save and exit the game<br/>
+- Otherwise, it may be deleted when switching households<br/>
 <br/>
-<h3>Things to avoid in CAS:</h3>
-<ul>
-	<li>Add, import and/or delete sims (new, replaced and/or removed sims are ignored)</li>
-	<li>Remove outfits (they will not be removed from the original sim, new outfits will be added)</li>
-	<li>Modify age (except in the range Teen - Elder)</li>
-	<li>Add, remove or modify occults. This seems to work only for some occults.</li>
-</ul>
+<h2>🛠️ Known Issues</h2>
+- **Pause the game** to make sure the computer has enough resources to process the cloning process.<br/>
+- Cloning sims to a new household works properly, but if you encounter issues in CAS with 'random' sims showing up it is likely caused by a busy CPU.<br/>
+- Copying attributes from Occult Sims may fail, even in their normal form.<br/>
 <br/>
-<h3>Transferred attributes</h3>
-The code used is from Copy Outfits, so it works fine and supports filtering.<br/>
-The copy process of attributes itself works fine, displaying the copied data in CAS may fail.<br/>
+<h2>🚫 Things to Avoid in CAS</h2>
 <br/>
-Currently only 'Outfits' are copied back from CAS to the sim.<br/>
-There is no way to detect which values have been replaced by TS4 with random values and which have been modified.<br/>
+- Adding, importing, or deleting Sims (these changes are ignored)<br/>
+- Removing outfits (they won’t be removed from the original Sim)<br/>
+- Changing age outside the Teen–Elder range<br/>
+- Adding, removing, or modifying occult status.<br/>
 <br/>
+<h2>✅ Transferred Attributes</h2>
+This mod uses code from **Copy Outfits**, with full filtering support.<br/>
+While the copy process works reliably, CAS may not always display the copied data correctly.<br/>
+Currently, **only outfits** are copied back to the original Sim.<br/>
+There’s no way to detect which values were replaced randomly by TS4 due to CPU issues versus intentionally modified.<br/>
+<br/>
+<h3>Included:</h3>
 <ul>
 	<li>Body Parts / All Outfits (++)</li>
 	<li>Base Attributes</li>
@@ -181,11 +186,12 @@ BUFFS = 2 ** 33
 
 ALL = 2 ** 40 - 1
 </pre>
+---<br/>
 <br/>
 <h1>📝 Addendum</h1>
 <br/>
 <h2>🔄 Game compatibility</h2>
-This mod has been tested with <i>The Sims 4</i> 1.119.109, S4CL 3.15, TS4Lib 0.3.42.<br/>
+This mod has been tested with <i>The Sims 4</i> 1.119.109, S4CL 3.17, TS4Lib 0.3.42.<br/>
 It is expected to remain compatible with future releases of TS4, S4CL, and TS4Lib.<br/>
 <br/>
 <h2>📦 Dependencies</h2>
@@ -337,7 +343,7 @@ To remove all of my mods, delete the following folders:<br/>
 <h1>📝 Addendum</h1>
 <br/>
 <h2>🔄 Game compatibility</h2>
-This mod has been tested with <i>The Sims 4</i> 1.119.109, S4CL 3.15, TS4Lib 0.3.42.<br/>
+This mod has been tested with <i>The Sims 4</i> 1.119.109, S4CL 3.17, TS4Lib 0.3.42.<br/>
 It is expected to remain compatible with future releases of TS4, S4CL, and TS4Lib.<br/>
 <br/>
 <h2>📦 Dependencies</h2>
