@@ -28,10 +28,12 @@ class ModInfo(CommonModInfo):
 
     @property
     def _version(self) -> str:
-        return '0.0.13'
+        return '0.0.14'
 
 
 r'''
+v0.0.14
+    EIC-1 Fix an error when no sim is in the PersistentStore().get_edit_sim()
 v0.0.13
     Pause the game before opening the sim picker
     Polish the README

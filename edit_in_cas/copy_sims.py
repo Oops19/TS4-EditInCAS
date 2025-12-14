@@ -136,7 +136,10 @@ class CopySims:
     @staticmethod
     @CommonIntervalEventRegistry.run_once(ModInfo.get_identity().name, )
     def exit2cas():
-        _edit_sim, _client_id = PersistentStore().get_edit_sim()
+        _sim = PersistentStore().get_edit_sim()
+        if _sim is None:
+            return
+        _edit_sim, _client_id = _sim
         sims4.commands.client_cheat(f"sims.exit2caswithhouseholdid {_edit_sim.id} {_edit_sim.household_id}", _client_id)
 
     def get_client_id(self) -> int:
